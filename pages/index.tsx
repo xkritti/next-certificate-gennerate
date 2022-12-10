@@ -1,6 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
 import certificate from "../public/Certificate.jpg";
+import certificateBronze from "../public/Certificate-Bronze.jpg";
+import certificateSilver from "../public/Certificate-Silver.jpg";
+import certificateGold from "../public/Certificate-Gold.jpg";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import { PDFDocument, rgb, cmyk } from "pdf-lib";
@@ -9,6 +12,7 @@ import fontkit from "@pdf-lib/fontkit";
 export default function Home() {
   const [name, setName] = useState("");
   const [fontSize, setFontsize] = useState("");
+  const [level, setLevel] = useState("1");
 
   return (
     <div className={styles.container}>
@@ -37,6 +41,12 @@ export default function Home() {
             value={fontSize}
             onChange={(e) => setFontsize(e.target.value)}
           />
+          <select value={level} onChange={(e) => setLevel(e.target.value)}>
+            <option value="1">Normal</option>
+            <option value="2">Bronze</option>
+            <option value="3">Silver</option>
+            <option value="4">Gold</option>
+          </select>
         </>
         <button
           onClick={async () => {
@@ -50,12 +60,50 @@ export default function Home() {
               "https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-thai@4.5.12/files/noto-sans-thai-all-400-normal.woff"
             ).then((res) => res.arrayBuffer());
 
-            const jpgImageBytes = await fetch(
-              certificate.src // path to your image
-            ).then((res) => {
-              console.log("jpgImageBytes", certificate.src);
-              return res.arrayBuffer();
-            });
+            // const jpgImageBytes = await fetch(
+            //   certificate.src // path to your image
+            // ).then((res) => {
+            //   console.log("jpgImageBytes", certificate.src);
+            //   return res.arrayBuffer();
+            // });
+            let jpgImageBytes;
+            switch (level) {
+              case "2":
+                jpgImageBytes = await fetch(
+                  certificateBronze.src // path to your image
+                ).then((res) => {
+                  console.log("jpgImageBytes", certificate.src);
+                  return res.arrayBuffer();
+                });
+                break;
+              case "3":
+                jpgImageBytes = await fetch(
+                  certificateSilver.src // path to your image
+                ).then((res) => {
+                  console.log("jpgImageBytes", certificate.src);
+                  return res.arrayBuffer();
+                });
+
+                break;
+              case "4":
+                jpgImageBytes = await fetch(
+                  certificateGold.src // path to your image
+                ).then((res) => {
+                  console.log("jpgImageBytes", certificate.src);
+                  return res.arrayBuffer();
+                });
+
+                break;
+
+              default:
+                jpgImageBytes = await fetch(
+                  certificate.src // path to your image
+                ).then((res) => {
+                  console.log("jpgImageBytes", certificate.src);
+                  return res.arrayBuffer();
+                });
+                break;
+            }
 
             pdfDoc.registerFontkit(fontkit);
             const customFont = await pdfDoc.embedFont(fontBytes);
@@ -74,7 +122,8 @@ export default function Home() {
             let some = name.split(" ");
             page.drawText(name, {
               x:
-                page.getWidth() / 2 - some[0].length * (parseInt(fontSize) / 2.2),
+                page.getWidth() / 2 -
+                (name.length / 2) * (parseInt(fontSize) / 2.2),
               y: page.getHeight() / 2 - parseInt(fontSize) / 1.5,
               size: parseInt(fontSize),
               font: customFont,
