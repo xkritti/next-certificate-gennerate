@@ -106,7 +106,9 @@ export default function Home() {
             }
 
             pdfDoc.registerFontkit(fontkit);
-            const customFont = await pdfDoc.embedFont(fontBytes);
+            const customFont = await pdfDoc.embedFont(fontBytes, {
+              subset: true,
+            });
 
             const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
             const jpgDims = jpgImage.scale(0.5);
@@ -119,13 +121,39 @@ export default function Home() {
               width: jpgDims.width,
               height: jpgDims.height,
             });
-            let some = name.split(" ");
+
             page.drawText(name, {
               x:
                 page.getWidth() / 2 -
-                (name.length / 2) * (parseInt(fontSize) / 2.2),
-              y: page.getHeight() / 2 - parseInt(fontSize) / 1.5,
+                (name.length / 2) * (parseInt(fontSize) / 2.35),
+              y: page.getHeight() / 2 - parseInt(fontSize) / 1.4,
               size: parseInt(fontSize),
+              font: customFont,
+              // font: timesRomanFont,
+              // color: rgb(6, 57, 112),
+              color: cmyk(0.64, 0.73, 0, 0.69),
+            });
+
+            page.drawText(`word word word word ${name}`, {
+              x:
+                page.getWidth() / 2 -
+                (`word word word word ${name}`.length / 2) *
+                  (parseInt(fontSize) / 2 / 2.2),
+              y: page.getHeight() / 2 - parseInt(fontSize) * 2,
+              size: parseInt(fontSize) / 2.25,
+              font: customFont,
+              // font: timesRomanFont,
+              // color: rgb(6, 57, 112),
+              color: cmyk(0.64, 0.73, 0, 0.69),
+            });
+
+            page.drawText(`Wording Wording Wording Wording ${name}`, {
+              x:
+                page.getWidth() / 2 -
+                (`Wording Wording Wording Wording ${name}`.length / 2) *
+                  (parseInt(fontSize) / 2 / 2.2),
+              y: page.getHeight() / 2 - parseInt(fontSize) * 3,
+              size: parseInt(fontSize) / 2.25,
               font: customFont,
               // font: timesRomanFont,
               // color: rgb(6, 57, 112),
