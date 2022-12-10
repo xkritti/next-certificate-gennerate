@@ -8,6 +8,7 @@ import fontkit from "@pdf-lib/fontkit";
 
 export default function Home() {
   const [name, setName] = useState("");
+  const [fontSize, setFontsize] = useState("");
 
   return (
     <div className={styles.container}>
@@ -29,6 +30,12 @@ export default function Home() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+          <label>Size of text`( must be 0-100)` :</label>
+          <input
+            type="number"
+            value={fontSize}
+            onChange={(e) => setFontsize(e.target.value)}
           />
         </>
         <button
@@ -64,14 +71,12 @@ export default function Home() {
               width: jpgDims.width,
               height: jpgDims.height,
             });
-            const fontSize = 48;
+            let some = name.split(" ");
             page.drawText(name, {
               x:
-                name.length > 10
-                  ? page.getWidth() / 2.5
-                  : page.getWidth() / 2 - fontSize / 3,
-              y: page.getHeight() / 2 - fontSize / 1.5,
-              size: fontSize,
+                page.getWidth() / 2 - some[0].length * (parseInt(fontSize) / 2.2),
+              y: page.getHeight() / 2 - parseInt(fontSize) / 1.5,
+              size: parseInt(fontSize),
               font: customFont,
               // font: timesRomanFont,
               // color: rgb(6, 57, 112),
@@ -82,7 +87,7 @@ export default function Home() {
             pdf.href = URL.createObjectURL(
               new Blob([pdfBytes], { type: "application/pdf" })
             );
-            pdf.download = "certificate.pdf";
+            pdf.download = `${name}-certificate.pdf`;
             pdf.click();
           }}
         >
