@@ -3,7 +3,7 @@ import Image from "next/image";
 import certificate from "../public/Certificate.jpg";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
-import { PDFDocument, rgb } from "pdf-lib";
+import { PDFDocument, rgb, cmyk } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 
 export default function Home() {
@@ -37,7 +37,10 @@ export default function Home() {
             const pdfDoc = await PDFDocument.create();
 
             const fontBytes = await fetch(
-              "https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew-webfont.ttf"
+              // "https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew-webfont.ttf"
+              // "https://cdn.jsdelivr.net/npm/@openfonts/prompt_thai@1.44.1/files/prompt-thai-400.woff"
+              // "https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans-thai@4.5.11/files/ibm-plex-sans-thai-all-400-normal.woff"
+              "https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-thai@4.5.12/files/noto-sans-thai-all-400-normal.woff"
             ).then((res) => res.arrayBuffer());
 
             const jpgImageBytes = await fetch(
@@ -67,11 +70,12 @@ export default function Home() {
                 name.length > 10
                   ? page.getWidth() / 2.5
                   : page.getWidth() / 2 - fontSize / 3,
-              y: page.getHeight() / 2 - fontSize / 3,
+              y: page.getHeight() / 2 - fontSize / 1.5,
               size: fontSize,
               font: customFont,
               // font: timesRomanFont,
-              color: rgb(0, 0.53, 0.71),
+              // color: rgb(6, 57, 112),
+              color: cmyk(0.64, 0.73, 0, 0.69),
             });
             const pdfBytes = await pdfDoc.save();
             const pdf = document.createElement("a");
