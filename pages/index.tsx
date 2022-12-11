@@ -59,6 +59,12 @@ export default function Home() {
               // "https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans-thai@4.5.11/files/ibm-plex-sans-thai-all-400-normal.woff"
               "https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-thai@4.5.12/files/noto-sans-thai-all-400-normal.woff"
             ).then((res) => res.arrayBuffer());
+            const fontBytes2 = await fetch(
+              // "https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew-webfont.ttf"
+              // "https://cdn.jsdelivr.net/npm/@openfonts/prompt_thai@1.44.1/files/prompt-thai-400.woff"
+              // "https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans-thai@4.5.11/files/ibm-plex-sans-thai-all-400-normal.woff"
+              "https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-thai@4.5.12/files/noto-sans-thai-all-700-normal.woff"
+            ).then((res) => res.arrayBuffer());
 
             // const jpgImageBytes = await fetch(
             //   certificate.src // path to your image
@@ -67,43 +73,67 @@ export default function Home() {
             //   return res.arrayBuffer();
             // });
             let jpgImageBytes;
-            switch (level) {
-              case "2":
-                jpgImageBytes = await fetch(
-                  certificateBronze.src // path to your image
-                ).then((res) => {
-                  console.log("jpgImageBytes", certificate.src);
-                  return res.arrayBuffer();
-                });
-                break;
-              case "3":
-                jpgImageBytes = await fetch(
-                  certificateSilver.src // path to your image
-                ).then((res) => {
-                  console.log("jpgImageBytes", certificate.src);
-                  return res.arrayBuffer();
-                });
-
-                break;
-              case "4":
-                jpgImageBytes = await fetch(
-                  certificateGold.src // path to your image
-                ).then((res) => {
-                  console.log("jpgImageBytes", certificate.src);
-                  return res.arrayBuffer();
-                });
-
-                break;
-
-              default:
-                jpgImageBytes = await fetch(
-                  certificate.src // path to your image
-                ).then((res) => {
-                  console.log("jpgImageBytes", certificate.src);
-                  return res.arrayBuffer();
-                });
-                break;
+            try {
+              jpgImageBytes = await fetch(
+                // certificate.src // path to your image
+                "https://storage.googleapis.com/nat-certificate/math/MATH_MTY1_BRONZE.jpg"
+              ).then((res) => {
+                console.log("jpgImageBytes", res);
+                return res.arrayBuffer();
+              });
+            } catch (error) {
+              console.log("error", error);
             }
+            // switch (level) {
+            //   case "2":
+            //     jpgImageBytes = await fetch(
+            //       certificateBronze.src // path to your image
+            //     ).then((res) => {
+            //       console.log("jpgImageBytes", certificate.src);
+            //       return res.arrayBuffer();
+            //     });
+            //     break;
+            //   case "3":
+            //     jpgImageBytes = await fetch(
+            //       certificateSilver.src // path to your image
+            //     ).then((res) => {
+            //       console.log("jpgImageBytes", certificate.src);
+            //       return res.arrayBuffer();
+            //     });
+
+            //     break;
+            //   case "4":
+            //     jpgImageBytes = await fetch(
+            //       certificateGold.src // path to your image
+            //     ).then((res) => {
+            //       console.log("jpgImageBytes", certificate.src);
+            //       return res.arrayBuffer();
+            //     });
+
+            //     break;
+
+            //   default:
+            //     try {
+            //       jpgImageBytes = await fetch(
+            //         // certificate.src // path to your image
+            //         "https://lh3.google.com/u/0/d/1zQb9gKl__rEkgBkqLAQwguukZtXt8Zfa=w1338-h976-iv1"
+            //       ).then((res) => {
+            //         // console.log("jpgImageBytes", certificate.src);
+            //         return res.arrayBuffer();
+            //       });
+            //     } catch (error) {
+            //       console.log("error", error);
+
+            //     }
+            //     // jpgImageBytes = await fetch(
+            //     //   // certificate.src // path to your image
+            //     //   "https://lh3.google.com/u/0/d/1zQb9gKl__rEkgBkqLAQwguukZtXt8Zfa=w1338-h976-iv1"
+            //     // ).then((res) => {
+            //     //   // console.log("jpgImageBytes", certificate.src);
+            //     //   return res.arrayBuffer();
+            //     // });
+            //     break;
+            // }
 
             pdfDoc.registerFontkit(fontkit);
             const customFont = await pdfDoc.embedFont(fontBytes, {
